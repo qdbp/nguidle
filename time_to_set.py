@@ -49,10 +49,22 @@ def main():
 
     from argparse import ArgumentParser
 
-    parser = ArgumentParser()
-    parser.add_argument("levels", metavar="LEVEL", nargs="+", type=int)
+    parser = ArgumentParser(
+        description="Calculate waiting times to complete set from zone. "
+        + "Assumes items are equiprobable."
+    )
     parser.add_argument(
-        "--base_prob", type=float, help="base probability of loot", default=1.0
+        "levels",
+        metavar="LEVEL",
+        nargs="+",
+        type=int,
+        help="existing levels of items in set",
+    )
+    parser.add_argument(
+        "--base_prob",
+        type=float,
+        help="base probability of set item from boss",
+        default=1.0,
     )
     parser.add_argument(
         "--ttk", type=float, default=10, help="time to kill average mob"
@@ -65,7 +77,6 @@ def main():
     )
 
     args = parser.parse_args()
-
     dist = mk_kills_to_set_dist(args.base_prob, args.levels)
     print_secs_to_set(dist, args.ttk, boss_chance=args.boss_chance)
 
